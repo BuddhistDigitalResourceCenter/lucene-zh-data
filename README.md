@@ -43,7 +43,10 @@ make update
 ## License
 
 The Unihan database is Copyright Unicode Consortium, [Unicode License](http://unicode.org/copyright.html).
+
 The TC-to-SC table from OpenCC(`scripts/variants/TSCharacters.txt`) is under Apache2
+
 The Python scripts in `scripts` are Copyright Huang Huang([mozillag](https://github.com/mozillazg)), Licence MIT
+
 All the output remains under the same Unicode License.
 
