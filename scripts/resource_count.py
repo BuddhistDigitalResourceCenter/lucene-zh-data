@@ -78,13 +78,13 @@ def count_pinyin():
                 for i in pinyins:
                     lazy = ''
                     for char in i:
-                        if char in lazy_dict:
+                        if char in lazy_dict.keys():
                             lazy += lazy_dict[char]
                         else:
                             lazy += char
 
                     PY_types[i] = True
-                    PY_lazy_types[i] = True
+                    PY_lazy_types[lazy] = True
     return len(PY_types), len(PY_lazy_types)
 
 
