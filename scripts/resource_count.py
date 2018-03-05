@@ -20,11 +20,11 @@ def parse_by_codepoints():
                     else:
                         codepoints[codepoint] = [entry]
 
-                    referenced_codepoints = re.findall(r'U\+[0-9A-Z]{4}', line)
+                    referenced_codepoints = re.findall(r'U\+[0-9A-Z]+', line)
                     for c in referenced_codepoints:
                         ideograms[c] = True
 
-    return codepoints
+    return codepoints, len(ideograms.keys())
 
 
 def count_TC_SC(unihan):
@@ -64,8 +64,11 @@ def count_PY(unihan):
 
 def count_pinyin():
     lazy_dict = {"ā": "a", "á": "a", "ǎ": "a", "à": "a",
-            "ē": "e", "é": "e", "ě": "e", "è": "e",
-            "ǖ": "u", "ǘ": "u", "ǚ": "u", "ǜ": "u"}
+                 "ē": "e", "é": "e", "ě": "e", "è": "e",
+                 "ī": "i", "í": "i", "ǐ": "i", "ì": "i",
+                 "ō": "o", "ó": "o", "ǒ": "o", "ò": "o",
+                 "ū": "u", "ú": "u", "ǔ": "u", "ù": "u",
+                 "ǖ": "u", "ǘ": "u", "ǚ": "u", "ǜ": "u"}
 
     PY_types = {}
     PY_lazy_types = {}
@@ -74,7 +77,7 @@ def count_pinyin():
         with open('{}/{}'.format('pinyin', p), 'r') as f:
             content = f.read().strip().split('\n')
             for line in content:
-                pinyins = line[7:].split('  #')[0].split(',')
+                pinyins = line.split(': ')[1].split('  #')[0].split(',')
                 for i in pinyins:
                     lazy = ''
                     for char in i:
@@ -88,11 +91,12 @@ def count_pinyin():
     return len(PY_types), len(PY_lazy_types)
 
 
-unihan = parse_by_codepoints()
-print('total unihan', len(unihan))
+unihan, total_cited = parse_by_codepoints()
+print('total codepoints cited in unihan', total_cited)
+print('total unihan entries', len(unihan))
 
 neutral, SC, TC, both = count_TC_SC(unihan)
-print('neutral {}\nTC only {}\nSC only {}\nTC and SC{}'.format(neutral, TC, SC, both))
+print('neutral {}\nTC only {}\nSC only {}\nTC and SC {}'.format(neutral, TC, SC, both))
 
 types, lazy_types = count_pinyin()
 print('PY {}\nPY lazy {}'.format(types, lazy_types))
