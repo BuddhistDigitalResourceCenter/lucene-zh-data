@@ -7,6 +7,10 @@ update:
 	-rm Unihan*
 	wget ftp://ftp.unicode.org/Public/UNIDATA/Unihan.zip -O Unihan.zip
 	unzip Unihan.zip
+	mkdir -p variants/
+	mkdir -p pinyin/
+	mkdir -p numerics/
+	mkdir -p ../output/
 	python3 parse_pinyin.py
 	python3 merge_pinyin.py
 	python3 parse_numerics.py

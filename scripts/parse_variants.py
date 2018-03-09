@@ -63,7 +63,7 @@ def parse(lines, kind, ignore_prefix='#') -> str:
         yield orig, variants
 
 
-def save_data(parsed, writer):
+def save_data(parsed, writer, keep_all=False):
     """
     does not include the same character if it can be simplified to itself,
     to reproduce the same behaviour as OpenCC.
@@ -83,10 +83,17 @@ def save_data(parsed, writer):
                 hanzi_variants.append('{variant}'.format(variant=hanzi_variant))
 
         if hanzi_variants:
-            line = '{hanzi}\t{variant}\n'.format(
+            if keep_all and len(hanzi_variants) > 1:
+                for h_v in hanzi_variants:
+                    line = '{hanzi}\t{variant}\n'.format(
+                        hanzi=hanzi_orig, variant=h_v
+                    )
+                    writer.write(line)
+            else:
+                line = '{hanzi}\t{variant}\n'.format(
                 hanzi=hanzi_orig, variant=hanzi_variants[0]
-            )
-            writer.write(line)
+                )
+                writer.write(line)
 
 
 if __name__ == '__main__':
@@ -99,4 +106,7 @@ if __name__ == '__main__':
             fp.seek(0)
             with open('{}/{}.txt'.format(out_path, kind), 'w') as writer:
                 pinyins = parse(fp.readlines(), kind=kind)
-                save_data(pinyins, writer)
+                if kind == 'kSemanticVariant':
+                    save_data(pinyins, writer, keep_all=True)
+                else:
+                    save_data(pinyins, writer)

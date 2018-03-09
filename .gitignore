@@ -556,4 +556,6 @@ paket-files/
 **/Unihan*
 **/**/k*
 
+output/*.tsv
+
 # End of https://www.gitignore.io/api/macos,pydev,python,eclipse,pycharm+all,visualstudio,visualstudiocode
