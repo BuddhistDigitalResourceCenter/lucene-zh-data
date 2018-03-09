@@ -38,13 +38,13 @@ with open('../output/tc2sc.tsv', 'w') as f:
 
 # copy the content as-is
 with open('variants/kZVariant.txt', 'r') as f:
-    with open('../output/alternatives.tsv', 'w') as g:
+    with open('../output/zh-alternatives.tsv', 'w') as g:
         lines = f.read().strip().split('\n')
         variants = parse_variants(lines)
         g.write('\n'.join(variants))
 
 with open('variants/kSemanticVariant.txt', 'r') as f:
-    with open('../output/synonyms.tsv', 'w') as g:
+    with open('../output/zh-synonyms.tsv', 'w') as g:
         lines = f.read().strip().split('\n')
         synonyms = parse_variants(lines)
         g.write('\n'.join(synonyms))
