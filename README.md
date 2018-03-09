@@ -19,7 +19,7 @@ Ideogram (both TC and SC) to Pinyin.
 The PY prefered is from `kMandarin`, as stated [in Unihan](http://www.unicode.org/reports/tr38/index.html#kMandarin).
 For ideograms not contained in this field, Pinyins are searched in `kHanyuPinyin`, then `kXHC1983` and finally in `kHanyuPinlu`.
 The later fields are only searched if the previous ones didn't yield any Pinyin.
-As stated [here](merge_pinyin.py#L86), this last field contains inaccuracies.
+As stated [here](scripts/merge_pinyin.py#L87), this last field contains inaccuracies.
 
 #### `output/synonyms.tsv`
 
