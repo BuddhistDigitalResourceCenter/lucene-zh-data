@@ -106,7 +106,4 @@ if __name__ == '__main__':
             fp.seek(0)
             with open('{}/{}.txt'.format(out_path, kind), 'w') as writer:
                 pinyins = parse(fp.readlines(), kind=kind)
-                if kind == 'kSemanticVariant':
-                    save_data(pinyins, writer, keep_all=True)
-                else:
-                    save_data(pinyins, writer)
+                save_data(pinyins, writer, keep_all=True)
