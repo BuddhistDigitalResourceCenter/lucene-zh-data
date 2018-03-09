@@ -66,17 +66,18 @@ def extend_pinyins(old_map, new_map, only_no_exists=False):
         else:
             old_map.setdefault(code, []).extend(pinyins)
 
+
 if __name__ == '__main__':
     raw_pinyin_map = {}
-    with open('pinyin/kHanyuPinyin.txt') as fp:
-        khanyupinyin = parse_pinyins(fp)
-        raw_pinyin_map.update(khanyupinyin)
-    with open('pinyin/kXHC1983.txt') as fp:
-        kxhc1983 = parse_pinyins(fp)
-        extend_pinyins(raw_pinyin_map, kxhc1983)
     with open('pinyin/kMandarin.txt') as fp:
         mandarin = parse_pinyins(fp)
-        extend_pinyins(raw_pinyin_map, mandarin)
+        raw_pinyin_map.update(mandarin)
+    with open('pinyin/kHanyuPinyin.txt') as fp:
+        khanyupinyin = parse_pinyins(fp)
+        extend_pinyins(raw_pinyin_map, khanyupinyin, only_no_exists=True)
+    with open('pinyin/kXHC1983.txt') as fp:
+        kxhc1983 = parse_pinyins(fp)
+        extend_pinyins(raw_pinyin_map, kxhc1983, only_no_exists=True)
     with open('pinyin/kHanyuPinlu.txt') as fp:
         khanyupinyinlu = parse_pinyins(fp)
         # 之所以只增加不存在的拼音数据而不更新已有的数据
