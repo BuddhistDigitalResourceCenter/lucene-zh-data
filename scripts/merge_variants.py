@@ -31,7 +31,10 @@ with open('variants/TSCharacters.txt', 'r') as f:
 with open('../output/tc2sc.tsv', 'w') as f:
     for k, v in opencc.items():
         if k not in unihan:
-            unihan[k] = v
+            if len(v) > 1:
+                v = v.replace(k, '').strip()
+                if v:
+                    unihan[k] = v[0]
 
     for k, v in unihan.items():
         f.write('{}\t{}\n'.format(k, v))
