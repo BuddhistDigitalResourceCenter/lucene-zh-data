@@ -76,6 +76,8 @@ def parse(lines, kind='kHanyuPinyin', ignore_prefix='#') -> str:
 
 
 def save_data(pinyins, writer):
+    pinyin_alphabet = {}
+
     for code, pinyin in pinyins:
         gl = {}
         exec('hanzi=chr(0x{})'.format(code), gl)
@@ -85,8 +87,32 @@ def save_data(pinyins, writer):
         )
         writer.write(line)
 
+        equiv = {"ā": "a", "á": "a", "ǎ": "a", "à": "a",
+         "ē": "e", "é": "e", "ě": "e", "è": "e",
+         "ī": "i", "í": "i", "ǐ": "i", "ì": "i",
+         "ō": "o", "ó": "o", "ǒ": "o", "ò": "o",
+         "ū": "u", "ú": "u", "ǔ": "u", "ù": "u",
+         "ǖ": "u", "ǘ": "u", "ǚ": "u", "ǜ": "u", "ü": "u"}
+
+        for p in pinyin.split(','):
+            vowels = re.sub(r'[bcdfghjklmnpqrstvwxyz]+', '', p).strip()
+            if vowels and vowels not in 'ǹ̀ḿńň':
+                simple = ''
+                for v in vowels:
+                    if v in equiv:
+                        simple += equiv[v]
+                    else:
+                        simple += v
+                if simple != vowels:
+                    pinyin_alphabet[vowels] = simple
+
+    with open('../output/pinyin-vowel-combinations.tsv', 'w') as f:
+        for k in sorted(pinyin_alphabet.keys()):
+            f.write(k + '\t' + pinyin_alphabet[k] + '\n')
+
 
 if __name__ == '__main__':
+
     out_path = 'pinyin'
     if not os.path.exists(out_path):
         os.makedirs(out_path)
