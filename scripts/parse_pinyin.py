@@ -102,8 +102,6 @@ def save_data(pinyins, writer, pinyin_alphabet):
                         simple += equiv[v]
                     else:
                         simple += v
-                if 'u u' in simple:
-                    print('ok')
                 if simple != vowels:
                     if simple not in pinyin_alphabet.keys():
                         pinyin_alphabet[simple] = {vowels: True}
@@ -125,7 +123,7 @@ if __name__ == '__main__':
                 pinyins = parse(fp.readlines(), kind=kind)
                 save_data(pinyins, writer, pinyin_alphabet)
 
-    with open('../output/pinyin-alphabet_expanded.txt', 'w') as f:
+    with open('../output/pinyin_alphabet_expanded.txt', 'w') as f:
         with open('pinyin/pinyin_alphabet.dict', 'r') as g:
             for line in g.read().strip().split('\n'):
                 f.write(line + '\n')

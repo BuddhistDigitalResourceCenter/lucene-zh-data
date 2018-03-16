@@ -33,9 +33,13 @@ Ideograms to arabic numbers.
 
 Stylistic variants("z-variants"; they share the same "abstract form"). 
 
-#### `pinyin-vowel-combinations.tsv`
+#### `output/pinyin-vowel-combinations.tsv`
 
 All the vowel combinations found in Unihan that can be turned into lazy PY.
+
+#### `output/pinyin_alphabet_expanded.txt`
+
+The content of `pinyin/pinyin_alphabet.dict` that has been expanded with all vowel combinations in `output/pinyin-vowel-combinations.tsv`.
 
 #### Update with latest Unihan release
 
