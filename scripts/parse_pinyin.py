@@ -10,7 +10,7 @@ def re_match_pinyin_line(kind):
         r'^U\+(?P<code>[0-9A-Z]+)\t{}\t(?P<pinyin>.+)$'.format(kind)
     )
 
-PINYIN = r'[^\d\.,]+'
+PINYIN = r'[^\d\., ]+'
 re_khanyupinyin = re.compile(r'''
     (?:\d{5}\.\d{2}0,)*\d{5}\.\d{2}0:
     ((?:%(pinyin)s,)*)
@@ -75,8 +75,7 @@ def parse(lines, kind='kHanyuPinyin', ignore_prefix='#') -> str:
         yield code, pinyin
 
 
-def save_data(pinyins, writer):
-    pinyin_alphabet = {}
+def save_data(pinyins, writer, pinyin_alphabet):
 
     for code, pinyin in pinyins:
         gl = {}
@@ -103,15 +102,17 @@ def save_data(pinyins, writer):
                         simple += equiv[v]
                     else:
                         simple += v
+                if 'u u' in simple:
+                    print('ok')
                 if simple != vowels:
-                    pinyin_alphabet[vowels] = simple
-
-    with open('../output/pinyin-vowel-combinations.tsv', 'w') as f:
-        for k in sorted(pinyin_alphabet.keys()):
-            f.write(k + '\t' + pinyin_alphabet[k] + '\n')
+                    if simple not in pinyin_alphabet.keys():
+                        pinyin_alphabet[simple] = {vowels: True}
+                    else:
+                        pinyin_alphabet[simple][vowels] = True
 
 
 if __name__ == '__main__':
+    pinyin_alphabet = {}
 
     out_path = 'pinyin'
     if not os.path.exists(out_path):
@@ -122,4 +123,18 @@ if __name__ == '__main__':
             fp.seek(0)
             with open('{}/{}.txt'.format(out_path, kind), 'w') as writer:
                 pinyins = parse(fp.readlines(), kind=kind)
-                save_data(pinyins, writer)
+                save_data(pinyins, writer, pinyin_alphabet)
+
+    with open('../output/pinyin-alphabet_expanded.txt', 'w') as f:
+        with open('pinyin/pinyin_alphabet.dict', 'r') as g:
+            for line in g.read().strip().split('\n'):
+                f.write(line + '\n')
+                for key in sorted(pinyin_alphabet.keys(), reverse=True):
+                    if key in line:
+                        for combination in pinyin_alphabet[key]:
+                            f.write(line.replace(key, combination) + '\n')
+                    continue
+
+    with open('../output/pinyin-vowel-combinations.tsv', 'w') as f:
+        for k, v in pinyin_alphabet.items():
+            f.write('{}\t{}\n'.format(k, '\t'.join(sorted(list(set(v))))))
