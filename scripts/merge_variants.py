@@ -1,4 +1,4 @@
-
+from collections import defaultdict
 
 def parse_variants(lines):
     syns = {}
@@ -23,21 +23,32 @@ def parse_variants(lines):
 
 
 with open('variants/kSimplifiedVariant.txt', 'r') as f:
-    unihan = {line.split('\t')[0]: line.split('\t')[1] for line in f.read().strip().split('\n')}
+    unihan = defaultdict(list)
+    for line in f.read().strip().split('\n'):
+        key, value = line.split('\t')
+        unihan[key].append(value)
 
 with open('variants/TSCharacters.txt', 'r') as f:
-    opencc = {line.split('\t')[0]: line.split('\t')[1] for line in f.read().strip().split('\n')}
+    opencc = defaultdict(list)
+    for line in f.read().strip().split('\n'):
+        key, value = line.split('\t')
+        values = value.split(' ')
+        for v in values:
+            opencc[key].append(v)
 
 with open('../output/tc2sc.tsv', 'w') as f:
     for k, v in opencc.items():
         if k not in unihan:
-            if len(v) > 1:
-                v = v.replace(k, '').strip()
-                if v:
-                    unihan[k] = v[0]
+            for value in v:
+                f.write('{}\t{}\n'.format(k, value))
+        else:
+            for value in v:
+                if v not in unihan[k]:
+                    f.write('{}\t{}\n'.format(k, value))
 
     for k, v in unihan.items():
-        f.write('{}\t{}\n'.format(k, v))
+        for value in v:
+            f.write('{}\t{}\n'.format(k, value))
 
 # copy the content as-is
 with open('variants/kZVariant.txt', 'r') as f:

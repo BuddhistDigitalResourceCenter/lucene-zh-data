@@ -4,7 +4,7 @@
 
 Format for all resources: `<char to be mapped>\t<mapped char(s)>`
 
-In case multiple equivalences exist, only the first one is retained. This follows the behaviour of OpenCC. 
+Multiple equivalences are kept expanded in 1:1 equivalences, including the cases where a character simplifies to itself. 
 
 #### `output/tc2sc.tsv`
 
