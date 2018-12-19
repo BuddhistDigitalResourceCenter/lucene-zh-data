@@ -1,4 +1,4 @@
-# Data for the Chinese Lucene Analyzers and Filters
+# Data for the Chinese Lucene Analyzers and Filters 
  
 ## Generated Resources
 
