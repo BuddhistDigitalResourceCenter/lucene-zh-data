@@ -40,10 +40,11 @@ with open('../output/tc2sc.tsv', 'w') as f:
     for k, v in opencc.items():
         if k not in unihan:
             for value in v:
-                f.write('{}\t{}\n'.format(k, value))
+                if value != k:
+                    f.write('{}\t{}\n'.format(k, value))
         else:
             for value in v:
-                if v not in unihan[k]:
+                if value not in unihan[k]:
                     f.write('{}\t{}\n'.format(k, value))
 
     for k, v in unihan.items():
