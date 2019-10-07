@@ -50,14 +50,14 @@ make update
 
 ## Acknowledgments
 
- - All the data comes from [Unihan Database](http://www.unicode.org/charts/unihan.html), except for `unihan/variants/TSCharacters.txt`, coming from [OpenCC](https://github.com/BYVoid/OpenCC). 
+ - All the data comes from [Unihan Database](http://www.unicode.org/charts/unihan.html), except for `unihan/variants/TSCharacters.txt` and `unihan/variants/STCharacters.txt`, coming from [OpenCC](https://github.com/BYVoid/OpenCC). 
  - The scripts to parse UniHan come from [pinyin-data](https://github.com/mozillazg/pinyin-data). 
 
 ## License
 
 The Unihan database is Copyright Unicode Consortium, [Unicode License](http://unicode.org/copyright.html).
 
-The TC-to-SC table from OpenCC(`scripts/variants/TSCharacters.txt`) is under [Apache2](https://opensource.org/licenses/Apache-2.0)
+The tables from OpenCC(`TSCharacters.txt` and `STCharacters.txt` in `scripts/variants/`) are under [Apache2](https://opensource.org/licenses/Apache-2.0)
 
 The Python scripts in `scripts` are Copyright Huang Huang([mozillag](https://github.com/mozillazg)), [Licence MIT](https://opensource.org/licenses/MIT)
 
