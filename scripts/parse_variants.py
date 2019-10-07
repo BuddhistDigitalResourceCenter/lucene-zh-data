@@ -21,6 +21,7 @@ re_semanticvariant = re.compile(r'''
 ''', re.X)
 re_kinds_map = {
     'kSimplifiedVariant': re_simplifiedvariant,
+    'kTraditionalVariant': re_simplifiedvariant,
     'kSemanticVariant': re_semanticvariant,
     'kZVariant': re_semanticvariant
 }
@@ -58,7 +59,7 @@ def parse(lines, kind, ignore_prefix='#') -> str:
         variants = functools.reduce(
             operator.add, raw_variants
         )
-        variants = [x.strip() for x in variants if x.strip()]
+        variants = [x.strip() for x in variants if (x.strip() and x.strip() != orig)]
         variants = remove_dup_items(variants)
         yield orig, variants
 
@@ -102,7 +103,7 @@ if __name__ == '__main__':
         os.makedirs(out_path)
     with open('Unihan_Variants.txt') as fp:
         for kind in ('kSimplifiedVariant', 'kSemanticVariant',
-                     'kZVariant'):
+                     'kZVariant', 'kTraditionalVariant'):
             fp.seek(0)
             with open('{}/{}.txt'.format(out_path, kind), 'w') as writer:
                 pinyins = parse(fp.readlines(), kind=kind)

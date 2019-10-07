@@ -1,12 +1,20 @@
 .PHONY: help
 help:
-	@echo "update                update with latest UniHan database"
+	@echo "update                run the migration script"
+	@echo "dl                    update data with latest UniHan database"
 
 .PHONY: update
-update:
-	-rm Unihan*
-	wget ftp://ftp.unicode.org/Public/UNIDATA/Unihan.zip -O Unihan.zip
-	unzip Unihan.zip
+
+Unihan.zip:
+	rm -f Unihan*
+	wget -q ftp://ftp.unicode.org/Public/UNIDATA/Unihan.zip -O Unihan.zip
+
+dl:
+	rm -f Unihan*
+	wget -q ftp://ftp.unicode.org/Public/UNIDATA/Unihan.zip -O Unihan.zip
+
+update: Unihan.zip 
+	unzip -f Unihan.zip
 	mkdir -p variants/
 	mkdir -p pinyin/
 	mkdir -p numerics/

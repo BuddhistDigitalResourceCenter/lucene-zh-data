@@ -23,33 +23,64 @@ def parse_variants(lines):
 
 
 with open('variants/kSimplifiedVariant.txt', 'r') as f:
-    unihan = defaultdict(list)
+    unihansv = defaultdict(list)
     for line in f.read().strip().split('\n'):
         key, value = line.split('\t')
-        unihan[key].append(value)
+        unihansv[key].append(value)
+
+with open('variants/kTraditionalVariant.txt', 'r') as f:
+    unihantv = defaultdict(list)
+    for line in f.read().strip().split('\n'):
+        key, value = line.split('\t')
+        unihantv[key].append(value)
 
 with open('variants/TSCharacters.txt', 'r') as f:
-    opencc = defaultdict(list)
+    openccts = defaultdict(list)
     for line in f.read().strip().split('\n'):
         key, value = line.split('\t')
         values = value.split(' ')
         for v in values:
-            opencc[key].append(v)
+            openccts[key].append(v)
+
+with open('variants/STCharacters.txt', 'r') as f:
+    openccst = defaultdict(list)
+    for line in f.read().strip().split('\n'):
+        key, value = line.split('\t')
+        values = value.split(' ')
+        for v in values:
+            openccst[key].append(v)
 
 with open('../output/tc2sc.tsv', 'w') as f:
-    for k, v in opencc.items():
-        if k not in unihan:
+    for k, v in openccts.items():
+        if k not in unihansv:
             for value in v:
                 if value != k:
                     f.write('{}\t{}\n'.format(k, value))
         else:
             for value in v:
-                if value not in unihan[k]:
+                if value not in unihansv[k] and value != k:
                     f.write('{}\t{}\n'.format(k, value))
 
-    for k, v in unihan.items():
+    for k, v in unihansv.items():
         for value in v:
-            f.write('{}\t{}\n'.format(k, value))
+            if value != k:
+                f.write('{}\t{}\n'.format(k, value))
+
+with open('../output/sc2tc.tsv', 'w') as f:
+    for k, v in openccst.items():
+        if k not in unihantv:
+            for value in v:
+                if value != k:
+                    f.write('{}\t{}\n'.format(k, value))
+        else:
+            for value in v:
+                if value not in unihantv[k] and value != k:
+                    f.write('{}\t{}\n'.format(k, value))
+
+    for k, v in unihantv.items():
+        for value in v:
+            if value != k:
+                f.write('{}\t{}\n'.format(k, value))
 
 # copy the content as-is
 with open('variants/kZVariant.txt', 'r') as f:
